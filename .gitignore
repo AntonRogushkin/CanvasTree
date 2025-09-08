@@ -1,0 +1,10 @@
+
+# Build results
+bin/
+obj/
+
+# Rider
+.idea/
+
+# General 
+.DS_Store
