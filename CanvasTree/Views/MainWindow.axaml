@@ -1,20 +1,46 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:vm="using:CanvasTree.ViewModels"
+        xmlns:controls="clr-namespace:CanvasTree.Controls"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="CanvasTree.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel"
+        Width="1920"
+        Height="1080"
         Icon="/Assets/avalonia-logo.ico"
         Title="CanvasTree">
 
     <Design.DataContext>
-        <!-- This only sets the DataContext for the previewer in an IDE,
-             to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
         <vm:MainWindowViewModel/>
     </Design.DataContext>
-
-    <TextBlock Text="{Binding Greeting}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-
+    
+    <Border x:Name="Host" Background="Transparent">
+        <Border.ContextFlyout>
+            <MenuFlyout>
+                <MenuItem Header="Add node" Command="{Binding AddNewNodeCommand}"/>
+            </MenuFlyout>
+        </Border.ContextFlyout>
+        <ItemsControl ItemsSource="{Binding Nodes}">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <Canvas Background="LightGray"/>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+        
+            <ItemsControl.Styles>
+                <Style Selector="ContentPresenter" x:DataType="vm:NodeViewModel">
+                    <Setter Property="Canvas.Left" Value="{Binding X}"/>
+                    <Setter Property="Canvas.Top" Value="{Binding Y}"/>
+                </Style>
+            </ItemsControl.Styles>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate x:DataType="vm:NodeViewModel">
+                    <controls:NodeControl/>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+    </Border>
+    
 </Window>
